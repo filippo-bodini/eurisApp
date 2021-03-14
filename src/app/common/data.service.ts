@@ -44,8 +44,9 @@ export class DataService {
 
   // POST /stores​/{idStore}​/products
   addStoreProduct(data: any): Promise<any> {
+    debugger;
     const apiEndpoint = environment.apiStoresEndpoint + '/' + environment.storeId + '/products';
-    const request = new ApiRequest('post', apiEndpoint, JSON.stringify(data));
+    const request = new ApiRequest('post', apiEndpoint, JSON.parse(JSON.stringify(data)));
     return this.api.call(request).catch(error => {
       this.logger.warn(error);
       return [];
