@@ -23,12 +23,64 @@ export class DataService {
   }
 
   // GET /stores​/{idStore}
-  // GET /stores​/{idStore}​/products
-  // POST /stores​/{idStore}​/products
-  // GET /stores​/{idStore}​/products​/{idProduct}
-  // DELETE /stores​/{idStore}​/products​/{idProduct}
-  // GET /stores​/{idStore}​/stats​/categories
+  getSingleStore(): Promise<any> {
+    const apiEndpoint = environment.apiStoresEndpoint + '/' + environment.storeId;
+    const request = new ApiRequest('get', apiEndpoint);
+    return this.api.call(request).catch(error => {
+      this.logger.warn(error);
+      return [];
+    });
+  }
 
+  // GET /stores​/{idStore}​/products
+  getStoreProducts(): Promise<any> {
+    const apiEndpoint = environment.apiStoresEndpoint + '/' + environment.storeId + '/products';
+    const request = new ApiRequest('get', apiEndpoint);
+    return this.api.call(request).catch(error => {
+      this.logger.warn(error);
+      return [];
+    });
+  }
+
+  // POST /stores​/{idStore}​/products
+  addStoreProduct(data: any): Promise<any> {
+    const apiEndpoint = environment.apiStoresEndpoint + '/' + environment.storeId + '/products';
+    const request = new ApiRequest('post', apiEndpoint, JSON.stringify(data));
+    return this.api.call(request).catch(error => {
+      this.logger.warn(error);
+      return [];
+    });
+  }
+
+  // GET /stores​/{idStore}​/products​/{idProduct}
+  getStoreProduct(productId: string): Promise<any> {
+    const apiEndpoint = environment.apiStoresEndpoint + '/' + environment.storeId + '/products/' + productId;
+    const request = new ApiRequest('get', apiEndpoint);
+    return this.api.call(request).catch(error => {
+      this.logger.warn(error);
+      return [];
+    });
+  }
+
+  // DELETE /stores​/{idStore}​/products​/{idProduct}
+  deleteStoreProduct(productId: string): Promise<any> {
+    const apiEndpoint = environment.apiStoresEndpoint + '/' + environment.storeId + '/products/' + productId;
+    const request = new ApiRequest('delete', apiEndpoint);
+    return this.api.call(request).catch(error => {
+      this.logger.warn(error);
+      return [];
+    });
+  }
+
+  // GET /stores​/{idStore}​/stats​/categories
+  getStoreStats(): Promise<any> {
+    const apiEndpoint = environment.apiStoresEndpoint + '/' + environment.storeId + '/stats/categories';
+    const request = new ApiRequest('get', apiEndpoint);
+    return this.api.call(request).catch(error => {
+      this.logger.warn(error);
+      return [];
+    });
+  }
 
 
 }

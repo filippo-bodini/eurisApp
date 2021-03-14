@@ -29,6 +29,8 @@ export class ApiRequest {
           this.path = this.path + '?' + queryString.join('&');
         }
         break;
+      case 'DELETE':
+        break;
     }
   }
 
