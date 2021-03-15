@@ -7,11 +7,21 @@ import { DataService } from './common/data.service';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent implements OnInit {
-  title = 'eurisApp';
+  title = 'Dolci di Piera';
+  mobileMenuOpened = false;
 
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
+    this.mobileMenuOpened = false;
+    this.dataService.fetchStores().then(
+      result => {
+        if (result && result[0] && result[0].data && result[0].data.name) {
+          this.title = result[0].data.name;
+        }
+        this.title = result[0].data.name ? result[0].data.name : '';
+      }
+    );
   }
 
 }
