@@ -13,7 +13,7 @@ export class DataService {
   constructor(private logger: LoggerService, private api: ApiService) { }
 
   // GET /stores
-  fetchStores(): Promise<any> {
+  fetchStores(): Promise<any[]> {
     const apiEndpoint = environment.apiStoresEndpoint;
     const request = new ApiRequest('get', apiEndpoint);
     return this.api.call(request).catch(error => {
