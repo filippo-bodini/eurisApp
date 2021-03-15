@@ -9,7 +9,6 @@ export class ApiRequest {
 
   constructor(method: string, path: string, data: any = {}) {
     this.method = method.toUpperCase();
-    debugger;
     this.path = path;
     switch (this.method) {
       case 'POST':

@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { DataService } from './data.service';
 import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientModule} from '@angular/common/http';
-import {ApiService} from "./api/api.service";
+import {ApiService} from './api/api.service';
 
 describe('DataService', () => {
   let service: DataService;
@@ -17,8 +17,8 @@ describe('DataService', () => {
       providers: [
         DataService,
         ApiService]
-    });
-    service = TestBed.inject(DataService);
+      });
+     service = TestBed.inject(DataService);
   });
 
   it('should be created', () => {
