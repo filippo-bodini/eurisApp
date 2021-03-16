@@ -4,7 +4,7 @@ import {ProductState} from './store/state';
 import {Observable} from 'rxjs';
 import {selectProductState} from './store/selectors';
 import {select, Store} from '@ngrx/store';
-import {fetchProducts} from './store/actions';
+import {fetchProducts, fetchStoreInfo} from './store/actions';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +12,6 @@ import {fetchProducts} from './store/actions';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent implements OnInit {
-  title = 'Dolci di Piera';
   mobileMenuOpened = false;
   state$: Observable<ProductState>;
 
@@ -24,6 +23,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.mobileMenuOpened = false;
+    this.fetchStoreInfo();
     this.fetchProducts();
   }
 
@@ -31,4 +31,7 @@ export class AppComponent implements OnInit {
     this.store.dispatch(fetchProducts());
   }
 
+  public fetchStoreInfo(): void {
+    this.store.dispatch(fetchStoreInfo());
+  }
 }

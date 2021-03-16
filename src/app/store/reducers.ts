@@ -1,10 +1,12 @@
 import {ProductInterface} from '../interfaces/product.interface';
 
 import {Action, createReducer, on} from '@ngrx/store';
-import { listAddProduct, listComplete, listReset, listRemoveProduct} from './actions';
+import { listAddProduct, listComplete, listReset, listRemoveProduct, listAddStore} from './actions';
 import {ProductState} from './state';
+import {StoreInterface} from '../interfaces/store.interface';
 
 const initialState: ProductState = {
+  shopName: '',
   ready: false,
   results: [],
   numResults: 0,
@@ -15,6 +17,7 @@ export const ProductReducer = createReducer(
   initialState,
   on(listReset, (state) => initialState),
   on(listAddProduct, (state, {newProduct}) => listAddProductState(state, newProduct)),
+  on(listAddStore, (state, {store}) => listAddShopName(state, store)),
   on(listComplete, (state, {products}) => listCompleteState(state, products)),
   on(listRemoveProduct, (state, {product}) => listRemoveProductState(state, product))
 );
@@ -26,6 +29,16 @@ export function reducer(state: any, action: Action): ProductState {
 /**
  * State reducers
  */
+
+export function listAddShopName(state: ProductState, shop: StoreInterface): ProductState {
+  return {
+    ...state,
+    shopName: shop.data.name,
+    ready: !!state.results.length,
+    results: [...state.results],
+    numResults: state.numResults,
+  } as ProductState;
+}
 
 export function listAddProductState(state: ProductState, newProduct: ProductInterface): ProductState {
   return {
@@ -51,6 +64,8 @@ export function listRemoveProductState(state: ProductState, product: ProductInte
 export function listCompleteState(state: ProductState, products: ProductInterface[]): ProductState {
   const results = products;
   // Return the new state
+  console.log(results);
+  console.log(state);
   return {
     ...state,
     ready: true,

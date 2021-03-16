@@ -7,6 +7,7 @@ import {
 import {ProductInterface} from '../interfaces/product.interface';
 
 const initialState: ProductState = {
+  shopName: '',
   ready: false,
   results: [],
   numResults: 0,
@@ -59,8 +60,9 @@ describe('Search reducer features tests', () => {
 
     it('should delete item to init state', () => {
       const newState = initialState;
-      const modifiedState = listRemoveProductState(newState, results[0]);
-      expect(newState.results.length).toBeGreaterThan(modifiedState.results.length);
+      const filledState = listCompleteState(newState, results);
+      const modifiedState = listRemoveProductState(filledState, results[0]);
+      expect(filledState.results.length).toBeGreaterThan(modifiedState.results.length);
     });
   });
 
