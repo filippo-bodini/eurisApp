@@ -1,11 +1,13 @@
 <!-- Toolbar -->
-<div class="toolbar" role="banner">
-  <span>{{title}}</span>
+<div class="toolbar" role="banner" *ngIf="(state$ | async) as state">
+  <span *ngIf="state.ready" >
+    {{state.shopName}}
+  </span>
   <div class="d-md-none menu-buttons">
-    <button class="input-group-text right-btn" (click)="mobileMenuOpened = !mobileMenuOpened">add product <i class="fa fa-cart-plus"></i></button>
-    <button class="input-group-text right-btn" (click)="mobileMenuOpened = !mobileMenuOpened">trash selected item <i class="fa fa-trash"></i></button>
-    <button class="input-group-text right-btn" (click)="mobileMenuOpened = !mobileMenuOpened">display list <i class="fa fa-list"></i></button>
-    <button class="input-group-text right-btn" (click)="mobileMenuOpened = !mobileMenuOpened">display grid <i class="fa fa-th-large"></i></button>
+    <button class="input-group-text right-btn">add product <i class="fa fa-cart-plus"></i></button>
+    <button class="input-group-text right-btn">trash selected item <i class="fa fa-trash"></i></button>
+    <button class="input-group-text right-btn">display list <i class="fa fa-list"></i></button>
+    <button class="input-group-text right-btn">display grid <i class="fa fa-th-large"></i></button>
 
 
   </div>
@@ -14,8 +16,11 @@
 <div class="container-flex">
   <div class="row">
     <div class="col-xl-6 col-lg-8 col-md-6">
-      <div class="content" role="main" *ngIf="!mobileMenuOpened">
+      <div class="content" role="main">
         <div class="card-container">
+          <ng-container *ngIf="(state$ | async) as state">
+            <pre>{{state.results[0] | json }}</pre>
+          </ng-container>
         </div>
       </div>
     </div>

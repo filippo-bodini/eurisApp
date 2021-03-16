@@ -4,6 +4,7 @@ import {LoggerService} from './logger.service';
 import {environment} from '../../environments/environment';
 import {ApiService} from './api/api.service';
 import {ApiRequest} from './api/api.type';
+import {ProductInterface} from '../interfaces/product.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,7 @@ export class DataService {
   }
 
   // GET /stores​/{idStore}​/products
-  getStoreProducts(): Promise<any> {
+  getStoreProducts(): Promise<ProductInterface[]> {
     const apiEndpoint = environment.apiStoresEndpoint + '/' + environment.storeId + '/products';
     const request = new ApiRequest('get', apiEndpoint);
     return this.api.call(request).catch(error => {
@@ -43,8 +44,7 @@ export class DataService {
   }
 
   // POST /stores​/{idStore}​/products
-  addStoreProduct(data: any): Promise<any> {
-    debugger;
+  addStoreProduct(data: any): Promise<ProductInterface> {
     const apiEndpoint = environment.apiStoresEndpoint + '/' + environment.storeId + '/products';
     const request = new ApiRequest('post', apiEndpoint, JSON.parse(JSON.stringify(data)));
     return this.api.call(request).catch(error => {

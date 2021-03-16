@@ -4,6 +4,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { ApiService } from './common/api/api.service';
 import { DataService } from './common/data.service';
+import {StoreModule} from '@ngrx/store';
+import * as ProductReducer from './store/reducers';
+import {EffectsModule} from '@ngrx/effects';
+import {ProductEffects} from './store/effects';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -30,6 +34,10 @@ describe('AppComponent', () => {
       imports: [
         RouterTestingModule,
         HttpClientModule,
+        StoreModule.forRoot({}),
+        StoreModule.forFeature('products', ProductReducer.reducer),
+        EffectsModule.forRoot(),
+        EffectsModule.forFeature([ProductEffects])
       ],
       declarations: [
         AppComponent
@@ -51,17 +59,4 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title the shop name`, () => {
-    fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    component.ngOnInit();
-    expect(app.title).toEqual('Dolci di Piera');
-  });
-
-  it('should render title', () => {
-    fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('eurisApp app is running!');
-  });
 });
