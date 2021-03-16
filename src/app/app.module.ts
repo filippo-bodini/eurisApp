@@ -11,6 +11,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
 import * as ProductReducer from './store/reducers';
 import {ProductEffects} from './store/effects';
+import {ReactiveFormsModule} from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent
@@ -27,6 +28,7 @@ import {ProductEffects} from './store/effects';
     }),
     StoreModule.forFeature('product', ProductReducer.reducer),
     EffectsModule.forFeature([ProductEffects]),
+    ReactiveFormsModule,
   ],
   providers: [ApiService],
   bootstrap: [AppComponent]

@@ -8,6 +8,7 @@ import {StoreModule} from '@ngrx/store';
 import * as ProductReducer from './store/reducers';
 import {EffectsModule} from '@ngrx/effects';
 import {ProductEffects} from './store/effects';
+import {FormBuilder} from '@angular/forms';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -43,6 +44,7 @@ describe('AppComponent', () => {
         AppComponent
       ],
       providers: [
+        FormBuilder,
         DataService,
         ApiService]
     }).compileComponents();
@@ -59,4 +61,20 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
+  it('should exist a form where you can add a product', () => {
+    compiled = fixture.nativeElement;
+    expect(compiled.querySelector('#new-product-form')).toBeTruthy();
+  });
+
+  it('form should have a submit button', () => {
+    compiled = fixture.nativeElement;
+    expect(compiled.querySelector('#new-product-submit')).toBeTruthy();
+  });
+
+  it('if should display an error message if submit fails', () => {
+    compiled = fixture.nativeElement;
+    component.submitNewProductHasErrors = true;
+    fixture.detectChanges();
+    expect(compiled.querySelector('#new-product-errors')).toBeTruthy();
+  });
 });
