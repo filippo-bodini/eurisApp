@@ -4,8 +4,9 @@ import {ProductState} from './store/state';
 import {Observable} from 'rxjs';
 import {selectProductState} from './store/selectors';
 import {select, Store} from '@ngrx/store';
-import {fetchProducts, fetchStoreInfo} from './store/actions';
+import {fetchProducts, fetchStoreInfo, saveProduct} from './store/actions';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ProductDetailInterface} from './interfaces/productDetail.interface';
 
 @Component({
   selector: 'app-root',
@@ -46,6 +47,16 @@ export class AppComponent implements OnInit {
   }
 
   public insertNewProduct(): void {
-
+    if (this.inputProduct) {
+      const values = this.inputProduct.getRawValue();
+      const newProduct = {
+        title:	values.title,
+        category:	values.category,
+        price:	values.price,
+        employee:	values.employee,
+        description: values.description,
+      } as ProductDetailInterface;
+      this.store.dispatch(saveProduct({newProduct}));
+    }
   }
 }

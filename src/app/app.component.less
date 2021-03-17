@@ -87,6 +87,9 @@ a:hover {
   display: flex;
   flex-wrap: wrap;
   max-width: 700px;
+  background-color: whitesmoke;
+  padding: 1rem;
+  border-radius: 10px;
 }
 
 .error {
@@ -106,4 +109,19 @@ a:hover {
 .list-group-item > p {
   max-width: 90%;
 }
+.input-group {
+  padding-inline: .5rem;
+}
 
+.extended-width {
+  width: 100%;
+}
+
+@media only screen and (min-width: 768px) {
+  .extended-width > textarea {
+    min-width: 450px;
+  }
+}
+.product-info-container{
+  width: 100%;
+}

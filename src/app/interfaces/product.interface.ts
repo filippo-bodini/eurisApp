@@ -1,10 +1,6 @@
+import {ProductDetailInterface} from './productDetail.interface';
+
 export interface ProductInterface {
   id: string;
-  data: {
-    title:	string;
-    category:	string;
-    price:	number;
-    employee:	string;
-    description?:	string;
-  };
+  data: ProductDetailInterface;
 }

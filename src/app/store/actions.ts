@@ -1,6 +1,7 @@
 import {createAction, props, union} from '@ngrx/store';
 import {ProductInterface} from '../interfaces/product.interface';
 import {StoreInterface} from '../interfaces/store.interface';
+import {ProductDetailInterface} from '../interfaces/productDetail.interface';
 
 export enum ProductListActionTypes {
   PRODUCT_LIST_RESET = '[PRODUCT-LIST] Reset',
@@ -18,7 +19,7 @@ export const listAddStore = createAction(ProductListActionTypes.PRODUCT_LIST_ADD
 export const listAddProduct = createAction(ProductListActionTypes.PRODUCT_LIST_ADD_PRODUCT, props<{ newProduct: ProductInterface }>());
 export const listRemoveProduct = createAction(ProductListActionTypes.PRODUCT_LIST_DELETE_PRODUCT, props<{ product: ProductInterface }>());
 export const listComplete = createAction(ProductListActionTypes.PRODUCT_LIST_COMPLETE, props<{ products: ProductInterface[] }>());
-export const saveProduct = createAction(ProductListActionTypes.PRODUCT_LIST_API_ADD_PRODUCT, props<{ newProduct: ProductInterface }>());
+export const saveProduct = createAction(ProductListActionTypes.PRODUCT_LIST_API_ADD_PRODUCT, props<{newProduct: ProductDetailInterface}>());
 export const deleteProduct = createAction(ProductListActionTypes.PRODUCT_LIST_API_DELETE_PRODUCT, props<{ product: ProductInterface }>());
 export const fetchProducts = createAction(ProductListActionTypes.PRODUCT_LIST_API_FETCH_PRODUCTS);
 export const fetchStoreInfo = createAction(ProductListActionTypes.PRODUCT_LIST_API_FETCH_STORE);
