@@ -19,7 +19,7 @@ export const ProductReducer = createReducer(
   on(listAddProduct, (state, {newProduct}) => listAddProductState(state, newProduct)),
   on(listAddStore, (state, {store}) => listAddShopName(state, store)),
   on(listComplete, (state, {products}) => listCompleteState(state, products)),
-  on(listRemoveProduct, (state, {product}) => listRemoveProductState(state, product))
+  on(listRemoveProduct, (state, {productId}) => listRemoveProductState(state, productId))
 );
 
 export function reducer(state: any, action: Action): ProductState {
@@ -41,35 +41,56 @@ export function listAddShopName(state: ProductState, shop: StoreInterface): Prod
 }
 
 export function listAddProductState(state: ProductState, newProduct: ProductInterface): ProductState {
-  return {
-    ...state,
-    ready: true,
-    results: [...state.results, newProduct],
-    numResults: state.numResults + 1,
-  } as ProductState;
-}
-
-export function listRemoveProductState(state: ProductState, product: ProductInterface): ProductState {
-  const filteredResults = state.results.filter((value) => {
-    return value.id !== product.id;
+  const filteredProducts = state.results.filter((item) => {
+    return item.data && item.data.title;
+  }) as ProductInterface[];
+  const results = [...filteredProducts, newProduct].sort((item, next) => {
+    if (item.data.title && next.data.title && item.data.title.toLowerCase() > next.data.title.toLowerCase()) {
+      return 1;
+    }
+    return -1;
   });
   return {
     ...state,
     ready: true,
-    results: [...filteredResults],
+    results: [...results],
+    numResults: state.numResults + 1,
+  } as ProductState;
+}
+
+export function listRemoveProductState(state: ProductState, productId: string): ProductState {
+  const filteredResults = state.results.filter((value) => {
+    return value.data && value.data.title && value.id !== productId;
+  });
+  const sortedResults = filteredResults.sort((item, next) => {
+    if (item.data.title && next.data.title && item.data.title.toLowerCase() > next.data.title.toLowerCase()) {
+      return 1;
+    }
+    return -1;
+  });
+  return {
+    ...state,
+    ready: true,
+    results: [...sortedResults],
     numResults: state.numResults - 1,
   } as ProductState;
 }
 
 export function listCompleteState(state: ProductState, products: ProductInterface[]): ProductState {
-  const results = products;
-  // Return the new state
-  console.log(results);
-  console.log(state);
+  const filteredProducts = products.filter((item) => {
+    return item.data && item.data.title;
+  });
+  const results = filteredProducts.sort((item, next) => {
+    if (item.data.title && next.data.title && item.data.title.toLowerCase() > next.data.title.toLowerCase()) {
+      return 1;
+    }
+    return 0;
+  });
+
   return {
     ...state,
     ready: true,
-    results: [...state.results, ...results],
+    results: [...results],
     numResults: results.length
   } as ProductState;
 

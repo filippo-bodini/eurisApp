@@ -17,10 +17,10 @@ export enum ProductListActionTypes {
 export const listReset = createAction(ProductListActionTypes.PRODUCT_LIST_RESET);
 export const listAddStore = createAction(ProductListActionTypes.PRODUCT_LIST_ADD_STORE, props<{ store: StoreInterface }>());
 export const listAddProduct = createAction(ProductListActionTypes.PRODUCT_LIST_ADD_PRODUCT, props<{ newProduct: ProductInterface }>());
-export const listRemoveProduct = createAction(ProductListActionTypes.PRODUCT_LIST_DELETE_PRODUCT, props<{ product: ProductInterface }>());
+export const listRemoveProduct = createAction(ProductListActionTypes.PRODUCT_LIST_DELETE_PRODUCT, props<{ productId: string }>());
 export const listComplete = createAction(ProductListActionTypes.PRODUCT_LIST_COMPLETE, props<{ products: ProductInterface[] }>());
 export const saveProduct = createAction(ProductListActionTypes.PRODUCT_LIST_API_ADD_PRODUCT, props<{newProduct: ProductDetailInterface}>());
-export const deleteProduct = createAction(ProductListActionTypes.PRODUCT_LIST_API_DELETE_PRODUCT, props<{ product: ProductInterface }>());
+export const deleteProduct = createAction(ProductListActionTypes.PRODUCT_LIST_API_DELETE_PRODUCT, props<{ productId: string }>());
 export const fetchProducts = createAction(ProductListActionTypes.PRODUCT_LIST_API_FETCH_PRODUCTS);
 export const fetchStoreInfo = createAction(ProductListActionTypes.PRODUCT_LIST_API_FETCH_STORE);
 
