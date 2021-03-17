@@ -90,7 +90,7 @@
                     <div class="col-md-9">{{product.data.description}}</div>
                   </div>
                   <div class="row">
-                    <div class="col-12"><button class="input-group-text right-btn">trash selected item <i class="fa fa-trash"></i></button></div>
+                    <div class="col-12"><button class="input-group-text right-btn" (click)="deleteProduct(product.id)">trash selected item <i class="fa fa-trash"></i></button></div>
                   </div>
                 </div>
               </ng-container>

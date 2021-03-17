@@ -4,7 +4,7 @@ import {ProductState} from './store/state';
 import {Observable} from 'rxjs';
 import {selectProductState} from './store/selectors';
 import {select, Store} from '@ngrx/store';
-import {fetchProducts, fetchStoreInfo, saveProduct} from './store/actions';
+import {deleteProduct, fetchProducts, fetchStoreInfo, saveProduct} from './store/actions';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ProductDetailInterface} from './interfaces/productDetail.interface';
 
@@ -58,5 +58,9 @@ export class AppComponent implements OnInit {
       } as ProductDetailInterface;
       this.store.dispatch(saveProduct({newProduct}));
     }
+  }
+
+  public deleteProduct(id: string): void {
+    this.store.dispatch(deleteProduct({productId: id}));
   }
 }

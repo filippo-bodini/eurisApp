@@ -61,8 +61,8 @@ describe('Search reducer features tests', () => {
     it('should delete item to init state', () => {
       const newState = initialState;
       const filledState = listCompleteState(newState, results);
-      const modifiedState = listRemoveProductState(filledState, results[0]);
-      expect(filledState.results.length).toBeGreaterThan(modifiedState.results.length);
+      const modifiedState = listRemoveProductState(filledState, results[0].id);
+      expect(filledState.results.length).toEqual(modifiedState.results.length + 1);
     });
   });
 

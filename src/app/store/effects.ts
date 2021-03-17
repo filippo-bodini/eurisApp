@@ -2,7 +2,15 @@ import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {ProductState} from './state';
 import {select, Store} from '@ngrx/store';
-import {listAddProduct, listAddStore, listComplete, listRemoveProduct, ProductListActionTypes, ProductListActionUnion} from './actions';
+import {
+  fetchProducts,
+  listAddProduct,
+  listAddStore,
+  listComplete,
+  listRemoveProduct,
+  ProductListActionTypes,
+  ProductListActionUnion
+} from './actions';
 import {concatMap, tap, withLatestFrom} from 'rxjs/operators';
 import {of} from 'rxjs';
 import {selectProductState} from './selectors';
@@ -24,6 +32,14 @@ export class ProductEffects {
     tap(([action, state]) => {
       this.dataService.addStoreProduct(action.newProduct).then((result) => {
         this.store$.dispatch(listAddProduct({newProduct: result}));
+      }).catch((error) => {
+        // for an unknown reason (for now) it rejects API call but stores item. Until it's fixed, i can refresh the product list
+        // todo: remove after fixing
+        this.dataService.getStoreProducts().then(
+          (results) => {
+            this.store$.dispatch(listComplete({products: results}));
+          }
+        );
       });
     }),
     ),
@@ -35,9 +51,9 @@ export class ProductEffects {
     concatMap(action => of(action).pipe(
       withLatestFrom(this.store$.pipe(select(selectProductState)))
     )),
-    tap(([action, state]) => {
-      this.dataService.deleteStoreProduct(action.product.id).then((result) => {
-        this.store$.dispatch(listRemoveProduct({product: result}));
+    tap(([productId, state]) => {
+      this.dataService.deleteStoreProduct(productId.productId).then((result) => {
+        this.store$.dispatch(listRemoveProduct({productId: productId.productId}));
       });
     }),
     ),
