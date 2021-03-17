@@ -72,7 +72,6 @@ export class ProductEffects {
             id: environment.storeId,
             data: result
           } as StoreInterface;
-          debugger;
           this.store$.dispatch(listAddStore({store: shop}));
         }
       );
