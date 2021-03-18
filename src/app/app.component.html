@@ -3,14 +3,14 @@
   <span *ngIf="state.ready" >
     {{state.shopName}}
   </span>
-  <div class="d-md-none menu-buttons">
+  <div class="menu-buttons">
     <button class="input-group-text right-btn">add product <i class="fa fa-cart-plus"></i></button>
-    <button class="input-group-text right-btn">display list <i class="fa fa-list"></i></button>
-    <button class="input-group-text right-btn">display grid <i class="fa fa-th-large"></i></button>
+    <button *ngIf="displayMode === 'grid'" class="input-group-text right-btn" (click)="displayMode = 'list'">display list <i class="fa fa-list"></i></button>
+    <button *ngIf="displayMode === 'list'" class="input-group-text right-btn" (click)="displayMode = 'grid'">display grid <i class="fa fa-th-large"></i></button>
   </div>
 </div>
 
-<div class="container-flex">
+<div class="container-flex" [hidden]="displayMode === 'grid'">
   <div class="row">
     <div class="col-xl-6 col-lg-6 col-md-12">
       <div class="content" role="main">
@@ -71,32 +71,67 @@
                 <div class="product-info-container">
                   <div class="row">
                     <div class="col-md-3">Titolo:</div>
-                    <div class="col-md-9">{{product.data.title}}</div>
+                    <div class="col-md-9 border-left">{{product.data.title}}</div>
                   </div>
                   <div class="row">
                     <div class="col-md-3">Category:</div>
-                    <div class="col-md-9">{{product.data.category}}</div>
+                    <div class="col-md-9 border-left">{{product.data.category}}</div>
                   </div>
                   <div class="row">
                     <div class="col-md-3">Price:</div>
-                    <div class="col-md-9">{{product.data.price}}</div>
+                    <div class="col-md-9 border-left">{{product.data.price}}</div>
                   </div>
                   <div class="row">
                     <div class="col-md-3">Employee:</div>
-                    <div class="col-md-9">{{product.data.employee}}</div>
+                    <div class="col-md-9 border-left">{{product.data.employee}}</div>
                   </div>
-                  <div class="row">
+                  <div class="row border-bottom">
                     <div class="col-md-3">Description:</div>
-                    <div class="col-md-9">{{product.data.description}}</div>
+                    <div class="col-md-9 border-left">{{product.data.description}}</div>
                   </div>
                   <div class="row">
-                    <div class="col-12"><button class="input-group-text right-btn" (click)="deleteProduct(product.id)">trash selected item <i class="fa fa-trash"></i></button></div>
+                    <div class="col-12"><button class="input-group-text right-btn card-delete-right" (click)="deleteProduct(product.id)">trash selected item <i class="fa fa-trash"></i></button></div>
                   </div>
                 </div>
               </ng-container>
             </ng-container>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+<div class="container-flex" [hidden]="displayMode === 'list'">
+  <div class="content container-grid" role="main">
+    <div class="card-container">
+      <ng-container *ngIf="(state$ | async) as state">
+        <ng-container *ngFor="let product of state.results">
+          <div class="product-info-container grid">
+            <div class="row">
+              <div class="col-md-3">Titolo:</div>
+              <div class="col-md-9 border-left">{{product.data.title}}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">Category:</div>
+              <div class="col-md-9 border-left">{{product.data.category}}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">Price:</div>
+              <div class="col-md-9 border-left">{{product.data.price}}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">Employee:</div>
+              <div class="col-md-9 border-left">{{product.data.employee}}</div>
+            </div>
+            <div class="row border-bottom">
+              <div class="col-md-3">Description:</div>
+              <div class="col-md-9 border-left">{{product.data.description}}</div>
+            </div>
+            <div class="row">
+              <div class="col-12"><button class="input-group-text right-btn card-delete-right" (click)="deleteProduct(product.id)"><i class="fa fa-trash"></i></button></div>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
     </div>
   </div>
 </div>
