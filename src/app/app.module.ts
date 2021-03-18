@@ -1,7 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ApiService } from './common/api/api.service';
@@ -12,6 +11,7 @@ import {environment} from '../environments/environment';
 import * as ProductReducer from './store/reducers';
 import {ProductEffects} from './store/effects';
 import {ReactiveFormsModule} from '@angular/forms';
+import {ChartsModule} from 'ng2-charts';
 @NgModule({
   declarations: [
     AppComponent
@@ -20,6 +20,7 @@ import {ReactiveFormsModule} from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    ChartsModule,
     EffectsModule.forRoot(),
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({

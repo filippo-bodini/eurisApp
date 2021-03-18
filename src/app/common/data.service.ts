@@ -74,7 +74,7 @@ export class DataService {
   }
 
   // GET /stores​/{idStore}​/stats​/categories
-  getStoreStats(): Promise<StatsCategoriesInterface> {
+  getStoreStats(): Promise<StatsCategoriesInterface[]> {
     const apiEndpoint = environment.apiStoresEndpoint + '/' + environment.storeId + '/stats/categories';
     const request = new ApiRequest('get', apiEndpoint);
     return this.api.call(request).catch(error => {
