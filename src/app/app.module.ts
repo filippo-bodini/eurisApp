@@ -11,16 +11,20 @@ import {environment} from '../environments/environment';
 import * as ProductReducer from './store/reducers';
 import {ProductEffects} from './store/effects';
 import {ReactiveFormsModule} from '@angular/forms';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 import {ChartsModule} from 'ng2-charts';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     ChartsModule,
+    CollapseModule.forRoot(),
     EffectsModule.forRoot(),
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({

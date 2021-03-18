@@ -21,6 +21,12 @@ export class AppComponent implements OnInit {
   inputProduct: FormGroup | undefined;
   displayMode = 'list';
   state$: Observable<ProductState>;
+  newProductIsCollapsed = false;
+  statsGraphIsCollapsed = false;
+  listElementsIsCollapsed = false;
+  gridDisplayGraph = false;
+  gridDisplayForm = false;
+  gridDisplayGrid = true;
 
   constructor(private fb: FormBuilder, private dataService: DataService, private readonly store: Store<ProductState>) {
     this.state$ = this.store.pipe(

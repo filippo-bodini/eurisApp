@@ -4,19 +4,23 @@
     {{state.shopName}}
   </span>
   <div class="menu-buttons">
-    <button class="input-group-text right-btn">add product <i class="fa fa-cart-plus"></i></button>
-    <button *ngIf="displayMode === 'grid'" class="input-group-text right-btn" (click)="displayMode = 'list'" id="grid-selector">display list <i class="fa fa-list"></i></button>
-    <button *ngIf="displayMode === 'list'" class="input-group-text right-btn" (click)="displayMode = 'grid'" id="list-selector">display grid <i class="fa fa-th-large"></i></button>
+    <button *ngIf="displayMode === 'grid'" class="input-group-text right-btn" (click)="gridDisplayGrid = false; gridDisplayForm = true; gridDisplayGraph = false">add product <i class="fa fa-cart-plus"></i></button>
+    <button *ngIf="displayMode === 'grid'" class="input-group-text right-btn" (click)="gridDisplayGrid = false; gridDisplayForm = false; gridDisplayGraph = true">show stats <i class="fa fa-bar-chart"></i></button>
+    <button class="input-group-text right-btn" (click)="displayMode = 'list'; gridDisplayGrid = false; gridDisplayForm = false; gridDisplayGraph = false" id="grid-selector">display list <i class="fa fa-list"></i></button>
+    <button class="input-group-text right-btn" (click)="displayMode = 'grid'; gridDisplayGrid = true; gridDisplayForm = false; gridDisplayGraph = false" id="list-selector">display grid <i class="fa fa-th-large"></i></button>
   </div>
 </div>
 
-<div [hidden]="displayMode === 'list'" class="container-flex" id="list-container">
+<div [hidden]="displayMode === 'grid'" class="container-flex" id="list-container">
   <div class="row">
     <div class="col-xl-6 col-lg-6 col-md-12">
 
-      <div class="content" role="main">
-        <span class="small-title">Insert new product</span>
-        <div class="card-container">
+      <div class="content no-margin-bottom-mobile" role="main">
+        <button class="small-title" (click)="newProductIsCollapsed = !newProductIsCollapsed"
+                [attr.aria-expanded]="!newProductIsCollapsed" aria-controls="collapseNewProductEvent">Insert new product <i [class]="newProductIsCollapsed ? 'fa fa-chevron-down' :  'fa fa-chevron-up'"></i></button>
+        <div class="card-container" id="collapseNewProductEvent"
+             [isAnimated]="true"
+             [collapse]="newProductIsCollapsed">
           <form *ngIf="inputProduct" [formGroup]="inputProduct"  (ngSubmit)="insertNewProduct()" class="flex-form" id="new-product-form">
             <div class="input-group mb-3">
               <div class="input-group-prepend">
@@ -63,16 +67,17 @@
             </div>
           </form>
         </div>
-        <span class="small-title">My shop stats</span>
-        <div class="content card-container chart-container" role="main">
+        <button class="small-title" [attr.aria-expanded]="!newProductIsCollapsed" aria-controls="collapseGraphEvent" (click)="statsGraphIsCollapsed = !statsGraphIsCollapsed">My shop stats <i [class]="statsGraphIsCollapsed ? 'fa fa-chevron-down' :  'fa fa-chevron-up'"></i></button>
+        <div id="collapseGraphEvent" [isAnimated]="true" [collapse]="statsGraphIsCollapsed" class="content card-container chart-container" role="main">
           <canvas id="myChart" width="400" height="400"></canvas>
         </div>
       </div>
     </div>
     <div class="col-xl-6 col-lg-6 col-md-12">
-      <div class="content" role="main">
-        <span class="small-title">Product list</span>
-        <div class="card-container">
+      <div class="content no-margin-top-mobile" role="main">
+        <button (click)="listElementsIsCollapsed = !listElementsIsCollapsed" class="small-title"
+                [attr.aria-expanded]="!listElementsIsCollapsed" aria-controls="collapseProductsEvent">Product list <i [class]="listElementsIsCollapsed ? 'fa fa-chevron-down' :  'fa fa-chevron-up'"></i></button>
+        <div id="collapseProductsEvent" class="card-container"  [isAnimated]="true" [collapse]="listElementsIsCollapsed">
           <ng-container *ngIf="(state$ | async) as state">
             <ng-container *ngFor="let product of state.results">
               <div class="product-info-container">
@@ -107,31 +112,31 @@
     </div>
   </div>
 </div >
-<div [hidden]="displayMode === 'grid'" class="container-flex" id="grid-container">
+<div [hidden]="displayMode === 'list'" class="container-flex" id="grid-container">
   <div class="content container-grid" role="main">
-    <div class="card-container">
+    <div class="card-container" [hidden]="gridDisplayGrid === false">
       <ng-container *ngIf="(state$ | async) as state">
         <ng-container *ngFor="let product of state.results">
           <div class="product-info-container grid">
             <div class="row">
-              <div class="col-md-3">Titolo:</div>
-              <div class="col-md-9 border-left">{{product.data.title}}</div>
+              <div class="col-3">Title:</div>
+              <div class="col-9 border-left">{{product.data.title}}</div>
             </div>
             <div class="row">
-              <div class="col-md-3">Category:</div>
-              <div class="col-md-9 border-left">{{product.data.category}}</div>
+              <div class="col-3">Category:</div>
+              <div class="col-9 border-left">{{product.data.category}}</div>
             </div>
             <div class="row">
-              <div class="col-md-3">Price:</div>
-              <div class="col-md-9 border-left">{{product.data.price}}</div>
+              <div class="col-3">Price:</div>
+              <div class="col-9 border-left">{{product.data.price}}</div>
             </div>
             <div class="row">
-              <div class="col-md-3">Employee:</div>
-              <div class="col-md-9 border-left">{{product.data.employee}}</div>
+              <div class="col-3">Employee:</div>
+              <div class="col-9 border-left">{{product.data.employee}}</div>
             </div>
             <div class="row border-bottom">
-              <div class="col-md-3">Description:</div>
-              <div class="col-md-9 border-left">{{product.data.description}}</div>
+              <div class="col-3">Description:</div>
+              <div class="col-9 border-left">{{product.data.description}}</div>
             </div>
             <div class="row">
               <div class="col-12"><button class="input-group-text right-btn card-delete-right" (click)="deleteProduct(product.id)"><i class="fa fa-trash"></i></button></div>
@@ -139,6 +144,56 @@
           </div>
         </ng-container>
       </ng-container>
+    </div>
+    <div class="card-container" [hidden]="gridDisplayForm === false">
+      <form *ngIf="inputProduct" [formGroup]="inputProduct"  (ngSubmit)="insertNewProduct()" class="flex-form" id="new-product-form-grid">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1-grid">Title</span>
+          </div>
+          <input type="text" class="form-control" placeholder="Title" aria-label="Title" aria-describedby="basic-addon1" id="product-form-title-grid"
+                 formControlName="title" [class.error]="inputProduct.controls.title.invalid && inputProduct.controls.title.touched">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon2-grid">Category</span>
+          </div>
+          <input type="text" class="form-control" placeholder="Category" aria-label="Category" aria-describedby="basic-addon2" id="product-form-category-grid"
+                 formControlName="category" [class.error]="inputProduct.controls.category.invalid && inputProduct.controls.category.touched">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon3-grid">Price</span>
+          </div>
+          <input type="number" class="form-control" placeholder="Price" aria-label="Price" aria-describedby="basic-addon3" id="product-form-price-grid"
+                 formControlName="price" [class.error]="inputProduct.controls.price.invalid && inputProduct.controls.price.touched">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon4-grid">Employee</span>
+          </div>
+          <input type="text" class="form-control" placeholder="Employee" aria-label="Employee" aria-describedby="basic-addon4" id="product-form-employee-grid"
+                 formControlName="employee" [class.error]="inputProduct.controls.employee.invalid && inputProduct.controls.employee.touched">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon5-grid">Description</span>
+          </div>
+          <textarea type="text" class="form-control" placeholder="Description" aria-label="Description" aria-describedby="basic-addon5" id="product-form-description-grid"
+                    formControlName="description"></textarea>
+        </div>
+        <div class="input-group mb-3" *ngIf="submitNewProductHasErrors" id="new-product-errors-grid">
+          <span>Errors during API call!</span>
+        </div>
+        <div class="input-group mb-3">
+          <button class="btn input-group-text right-btn" type="submit" [disabled]="!inputProduct.valid" id="new-product-submit-grid">
+            Save product <i class="fa fa-save"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="card-container" [hidden]="gridDisplayGraph === false">
+      <canvas id="myChartGrid" width="800" height="800"></canvas>
     </div>
   </div>
 </div>
