@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   mobileMenuOpened = false;
   submitNewProductHasErrors = false;
   inputProduct: FormGroup | undefined;
+  displayMode = 'list';
   state$: Observable<ProductState>;
 
   constructor(private fb: FormBuilder, private dataService: DataService, private readonly store: Store<ProductState>) {

@@ -77,4 +77,19 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     expect(compiled.querySelector('#new-product-errors')).toBeTruthy();
   });
+  // maybe better to test with  cypress
+  // it('if should change layout after clicking on buttons', () => {
+  //   compiled = fixture.nativeElement;
+  //   fixture.detectChanges();
+  //   compiled.querySelector('#grid-selector').click();
+  //   fixture.detectChanges();
+  //   expect(compiled.querySelector('#grid-container')).toBeTruthy();
+  //   expect(compiled.querySelector('#grid-selector')).toBeFalsy();
+  //   expect(compiled.querySelector('#list-container')).toBeFalsy();
+  //   compiled.querySelector('#list-container').click();
+  //   fixture.detectChanges();
+  //   expect(compiled.querySelector('#list-container')).toBeTruthy();
+  //   expect(compiled.querySelector('#grid-container')).toBeFalsy();
+  //   expect(compiled.querySelector('#grid-selector')).toBeTruthy();
+  // });
 });
