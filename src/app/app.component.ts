@@ -70,7 +70,7 @@ export class AppComponent implements OnInit {
   public fetchProductsStats(): void {
     this.store.dispatch(fetchStoreStats());
     this.state$.subscribe((state) => {
-      if (state.ready) {
+      if (state && state.ready) {
         this.prepareGraph(state.storeStats);
       }
     });
