@@ -5,9 +5,9 @@ import {select, Store} from '@ngrx/store';
 import {
   fetchProducts,
   listAddProduct,
-  listAddStore,
+  listAddStore, listAddStoreStats,
   listComplete,
-  listRemoveProduct,
+  listRemoveProduct, listSetLoading,
   ProductListActionTypes,
   ProductListActionUnion
 } from './actions';
@@ -30,6 +30,7 @@ export class ProductEffects {
       withLatestFrom(this.store$.pipe(select(selectProductState)))
     )),
     tap(([action, state]) => {
+      this.store$.dispatch(listSetLoading());
       this.dataService.addStoreProduct(action.newProduct).then((result) => {
         this.store$.dispatch(listAddProduct({newProduct: result}));
       }).catch((error) => {
@@ -52,6 +53,7 @@ export class ProductEffects {
       withLatestFrom(this.store$.pipe(select(selectProductState)))
     )),
     tap(([productId, state]) => {
+      this.store$.dispatch(listSetLoading());
       this.dataService.deleteStoreProduct(productId.productId).then((result) => {
         this.store$.dispatch(listRemoveProduct({productId: productId.productId}));
       });
@@ -66,6 +68,7 @@ export class ProductEffects {
       withLatestFrom(this.store$.pipe(select(selectProductState)))
     )),
     tap(() => {
+      this.store$.dispatch(listSetLoading());
       const products = this.dataService.getStoreProducts().then(
         (results) => {
           this.store$.dispatch(listComplete({products: results}));
@@ -82,6 +85,7 @@ export class ProductEffects {
       withLatestFrom(this.store$.pipe(select(selectProductState)))
     )),
     tap(() => {
+      this.store$.dispatch(listSetLoading());
       const products = this.dataService.getSingleStore().then(
         (result) => {
           const shop = {
@@ -89,6 +93,23 @@ export class ProductEffects {
             data: result
           } as StoreInterface;
           this.store$.dispatch(listAddStore({store: shop}));
+        }
+      );
+    }),
+    ),
+    { dispatch: false });
+
+  fetchStoreStats$ = createEffect(() => this.actions$.pipe(
+    ofType(ProductListActionTypes.PRODUCT_LIST_API_FETCH_STORE_STATS),
+    // Import latest state
+    concatMap(action => of(action).pipe(
+      withLatestFrom(this.store$.pipe(select(selectProductState)))
+    )),
+    tap(() => {
+      this.store$.dispatch(listSetLoading());
+      const products = this.dataService.getStoreStats().then(
+        (result) => {
+          this.store$.dispatch(listAddStoreStats({stats: result}));
         }
       );
     }),

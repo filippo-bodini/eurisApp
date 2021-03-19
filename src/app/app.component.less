@@ -132,10 +132,15 @@ a:hover {
 }
 .grid {
  margin: .5rem;
- min-width: 250px;
+ min-width: 360px;
  width: 30%;
 }
-
+@media only screen and (max-width: 795px) {
+  .grid {
+    margin: .5rem;
+    width: 100%;
+  }
+}
 .container-grid {
  max-width: unset;
 }
@@ -159,4 +164,19 @@ a:hover {
   color: #495057;
   text-align: center;
   white-space: nowrap;
+  background-color: unset;
+  border: unset;
+  width: 100%;
+  max-width: 700px;
+  margin-top: .5rem;
 }
+
+@media only screen and (max-width: 992px) {
+  .no-margin-top-mobile {
+    margin-top: unset;
+  }
+  .no-margin-bottom-mobile {
+    margin-bottom: unset;
+  }
+}
+

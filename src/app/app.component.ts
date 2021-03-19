@@ -4,10 +4,11 @@ import {ProductState} from './store/state';
 import {Observable} from 'rxjs';
 import {selectProductState} from './store/selectors';
 import {select, Store} from '@ngrx/store';
-import {deleteProduct, fetchProducts, fetchStoreInfo, saveProduct} from './store/actions';
+import {deleteProduct, fetchProducts, fetchStoreInfo, fetchStoreStats, saveProduct} from './store/actions';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ProductDetailInterface} from './interfaces/productDetail.interface';
 import * as Chart from 'chart.js';
+import {StatsCategoriesInterface} from './interfaces/statsCategories.interface';
 
 @Component({
   selector: 'app-root',
@@ -17,10 +18,12 @@ import * as Chart from 'chart.js';
 
 export class AppComponent implements OnInit {
   mobileMenuOpened = false;
-  submitNewProductHasErrors = false;
   inputProduct: FormGroup | undefined;
   displayMode = 'list';
   state$: Observable<ProductState>;
+  newProductIsCollapsed = false;
+  statsGraphIsCollapsed = false;
+  listElementsIsCollapsed = false;
 
   constructor(private fb: FormBuilder, private dataService: DataService, private readonly store: Store<ProductState>) {
     this.state$ = this.store.pipe(
@@ -65,29 +68,35 @@ export class AppComponent implements OnInit {
   }
 
   public fetchProductsStats(): void {
-    this.dataService.getStoreStats().then(result => {
-      const labels = result.map(element => element.category);
-      const datasets = result.map(element => element.numberOfProducts);
-      const bgColors = result.map(() => {
-        return  'rgb(' +  Math.floor(Math.random() * 255) + ',' +
-          Math.floor(Math.random() * 255) + ',' + Math.floor(Math.random() * 255) + ')';
-      });
-      const ctx = document.getElementById('myChart') as HTMLCanvasElement;
-      const chart = new Chart(ctx, {
-        type: 'polarArea',
-        data: {
-          labels,
-          datasets: [{
-            data: datasets,
-            backgroundColor: bgColors,
-          }],
-        }
-
-      });
+    this.store.dispatch(fetchStoreStats());
+    this.state$.subscribe((state) => {
+      if (state.ready) {
+        this.prepareGraph(state.storeStats);
+      }
     });
 
   }
 
+  public prepareGraph(data: StatsCategoriesInterface[]): void {
+    const labels = data.map(element => element.category);
+    const datasets = data.map(element => element.numberOfProducts);
+    const bgColors = data.map(() => {
+      return  'rgb(' +  Math.floor(Math.random() * 255) + ',' +
+        Math.floor(Math.random() * 255) + ',' + Math.floor(Math.random() * 255) + ')';
+    });
+    const ctx = document.getElementById('myChart') as HTMLCanvasElement;
+    const chart = new Chart(ctx, {
+      type: 'polarArea',
+      data: {
+        labels,
+        datasets: [{
+          data: datasets,
+          backgroundColor: bgColors,
+        }],
+      }
+
+    });
+  }
   public deleteProduct(id: string): void {
     this.store.dispatch(deleteProduct({productId: id}));
   }
