@@ -1,12 +1,14 @@
 import {ProductInterface} from '../interfaces/product.interface';
 
 import {Action, createReducer, on} from '@ngrx/store';
-import { listAddProduct, listComplete, listReset, listRemoveProduct, listAddStore} from './actions';
+import {listAddProduct, listComplete, listReset, listRemoveProduct, listAddStore, listAddStoreStats, listSetLoading} from './actions';
 import {ProductState} from './state';
 import {StoreInterface} from '../interfaces/store.interface';
+import {StatsCategoriesInterface} from '../interfaces/statsCategories.interface';
 
 const initialState: ProductState = {
   shopName: '',
+  storeStats: [],
   ready: false,
   results: [],
   numResults: 0,
@@ -16,8 +18,10 @@ const initialState: ProductState = {
 export const ProductReducer = createReducer(
   initialState,
   on(listReset, (state) => initialState),
+  on(listSetLoading, (state) => listSetLoadingState(state)),
   on(listAddProduct, (state, {newProduct}) => listAddProductState(state, newProduct)),
-  on(listAddStore, (state, {store}) => listAddShopName(state, store)),
+  on(listAddStore, (state, {store}) => listAddShopNameState(state, store)),
+  on(listAddStoreStats, (state, {stats}) => listAddStoreStatsState(state, stats)),
   on(listComplete, (state, {products}) => listCompleteState(state, products)),
   on(listRemoveProduct, (state, {productId}) => listRemoveProductState(state, productId))
 );
@@ -30,10 +34,28 @@ export function reducer(state: any, action: Action): ProductState {
  * State reducers
  */
 
-export function listAddShopName(state: ProductState, shop: StoreInterface): ProductState {
+export function listAddShopNameState(state: ProductState, shop: StoreInterface): ProductState {
   return {
     ...state,
     shopName: shop.data.name,
+    ready: !!state.results.length,
+    results: [...state.results],
+    numResults: state.numResults,
+  } as ProductState;
+}
+
+export function listSetLoadingState(state: ProductState): ProductState {
+  return {
+    ...state,
+    ready: false,
+  } as ProductState;
+}
+
+export function listAddStoreStatsState(state: ProductState, stats: StatsCategoriesInterface[]): ProductState {
+  return {
+    ...state,
+    shopName: state.shopName,
+    storeStats: stats,
     ready: !!state.results.length,
     results: [...state.results],
     numResults: state.numResults,
