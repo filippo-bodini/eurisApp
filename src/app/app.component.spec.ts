@@ -71,25 +71,4 @@ describe('AppComponent', () => {
     expect(compiled.querySelector('#new-product-submit')).toBeTruthy();
   });
 
-  it('if should display an error message if submit fails', () => {
-    compiled = fixture.nativeElement;
-    component.submitNewProductHasErrors = true;
-    fixture.detectChanges();
-    expect(compiled.querySelector('#new-product-errors')).toBeTruthy();
-  });
-  // maybe better to test with  cypress
-  // it('if should change layout after clicking on buttons', () => {
-  //   compiled = fixture.nativeElement;
-  //   fixture.detectChanges();
-  //   compiled.querySelector('#grid-selector').click();
-  //   fixture.detectChanges();
-  //   expect(compiled.querySelector('#grid-container')).toBeTruthy();
-  //   expect(compiled.querySelector('#grid-selector')).toBeFalsy();
-  //   expect(compiled.querySelector('#list-container')).toBeFalsy();
-  //   compiled.querySelector('#list-container').click();
-  //   fixture.detectChanges();
-  //   expect(compiled.querySelector('#list-container')).toBeTruthy();
-  //   expect(compiled.querySelector('#grid-container')).toBeFalsy();
-  //   expect(compiled.querySelector('#grid-selector')).toBeTruthy();
-  // });
 });

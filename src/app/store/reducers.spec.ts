@@ -8,6 +8,7 @@ import {ProductInterface} from '../interfaces/product.interface';
 
 const initialState: ProductState = {
   shopName: '',
+  storeStats: [],
   ready: false,
   results: [],
   numResults: 0,
